@@ -4,6 +4,7 @@ pipeline {
     stage('Development') {
       steps {
         echo 'This is development'
+        sleep 2
       }
     }
 
@@ -15,8 +16,25 @@ pipeline {
     }
 
     stage('Deploy to QA') {
-      steps {
-        echo 'Deploy to AWS QA Server'
+      parallel {
+        stage('Deploy to QA') {
+          steps {
+            echo 'Deploy to AWS QA Server'
+          }
+        }
+
+        stage('Sleep at partitioning of QA stage') {
+          steps {
+            sleep 5
+          }
+        }
+
+        stage('Nested QA stage') {
+          steps {
+            echo 'Nested stage of QA team'
+          }
+        }
+
       }
     }
 
@@ -45,7 +63,7 @@ pipeline {
 
     stage('Deploy to UAT') {
       steps {
-        echo 'Deploy to UAT AWS Server'
+        echo 'UAT test scripts execution'
       }
     }
 
@@ -64,10 +82,13 @@ pipeline {
 
       }
       steps {
-        echo 'Deploy to AWS Prod'
-        jiraComment(issueKey: 'SFO-107', body: 'This is a comment regarding the quality of the response.')
+        echo 'Deploy to Prod'
+        jiraComment(issueKey: 'VPTS-1751', body: 'This is a comment regarding the quality of the response.')
       }
     }
 
+  }
+  environment {
+    Name = 'HARINATH ANNAVARAPU'
   }
 }
