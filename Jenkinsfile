@@ -4,7 +4,10 @@ pipeline {
     stage('Development') {
       steps {
         echo 'This is development'
+
         sleep 2
+        git(url: 'https://github.com/LeafPages/EyeManage', branch: 'master')
+
       }
     }
 
